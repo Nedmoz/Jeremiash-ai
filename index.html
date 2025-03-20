@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Banco dd Leitura- Análise de Saúde Digital</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2C7EDB;
+            --secondary: #34B1AA;
+            --accent: #FF6B6B;
+            --background: #F7FAFC;
+            --text: #2D3748;
+            --light-gray: #EDF2F7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            color: var(--primary);
+            margin: 2rem 0;
+            font-size: 1.8rem;
+        }
+
+        .causes-recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info-list li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin: 2rem 0;
+        }
+
+        @keyframes pulseAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .user-stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            animation: pulseAnimation 2s infinite;
+        }
+
+        .risk-high { border-left: 4px solid #FF6B6B; }
+        .risk-medium { border-left: 4px solid #FFA751; }
+        .risk-low { border-left: 4px solid #34B1AA; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            margin-top: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">Banco de Leitura</div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Análise de Saúde Digital</h1>
+            <p>Avaliação Detalhada e Recomendações Personalizadas</p>
+        </div>
+
+        <div class="user-stats">
+            <div class="user-stat-card risk-high">
+                <h3>Muaija</h3>
+                <p>Pontuação: 137</p>
+                <p>Risco: Alto</p>
+            </div>
+            <div class="user-stat-card risk-medium">
+                <h3>Naima</h3>
+                <p>Pontuação: 89</p>
+                <p>Risco: Médio</p>
+            </div>
+            <div class="user-stat-card risk-low">
+                <h3>S</h3>
+                <p>Pontuação: 42</p>
+                <p>Risco: Baixo</p>
+            </div>
+            <div class="user-stat-card risk-low">
+                <h3>Mussa</h3>
+                <p>Pontuação: 28</p>
+                <p>Risco: Baixo</p>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="mainChart"></canvas>
+        </div>
+
+        <h2 class="section-title">Análise Detalhada</h2>
+        
+        <div class="causes-recommendations">
+            <div class="info-card">
+                <h3>Causas Identificadas</h3>
+                <ul class="info-list">
+                    <li>Uso excessivo de redes sociais (>6h/dia)</li>
+                    <li>Dependência de validação online</li>
+                    <li>Substituição de interações presenciais</li>
+                    <li>Procrastinação digital frequente</li>
+                    <li>Ansiedade social aumentada</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Impactos na Saúde</h3>
+                <ul class="info-list">
+                    <li>Alterações no padrão de sono</li>
+                    <li>Ansiedade e estresse elevados</li>
+                    <li>Problemas de postura e visão</li>
+                    <li>Redução da atividade física</li>
+                    <li>Dificuldade de concentração</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h3>Recomendações</h3>
+                <ul class="info-list">
+                    <li>Estabelecer limites de tempo de tela</li>
+                    <li>Implementar pausas regulares</li>
+                    <li>Praticar atividades offline</li>
+                    <li>Manter rotina de sono regular</li>
+                    <li>Buscar apoio profissional quando necessário</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made by Jeremiash © 2025 | Banco de Leitura- Cuidando da sua Saúde Digital</p>
+        </footer>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        let animationFrame;
+        
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Muaija',
+                    data: [137, 135, 138, 136, 137, 137],
+                    borderColor: '#FF6B6B',
+                    tension: 0.4
+                }, {
+                    label: 'Naima',
+                    data: [89, 87, 90, 88, 89, 89],
+                    borderColor: '#FFA751',
+                    tension: 0.4
+                }, {
+                    label: 'S',
+                    data: [42, 43, 41, 42, 42, 42],
+                    borderColor: '#34B1AA',
+                    tension: 0.4
+                }, {
+                    label: 'Mus',
+                    data: [28, 29, 27, 28, 28, 28],
+                    borderColor: '#2C7EDB',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Evolução do Índice de Dependência Digital',
+                        font: {
+                            size: 16
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        suggestedMax: 150
+                    }
+                }
+            }
+        });
+
+        // Função para animar o gráfico
+        function animateChart() {
+            chart.data.datasets.forEach(dataset => {
+                dataset.data = dataset.data.map(value => 
+                    value + (Math.random() - 0.5) * 2
+                );
+            });
+            chart.update('none');
+            animationFrame = requestAnimationFrame(animateChart);
+        }
+
+        // Iniciar animação
+        animateChart();
+    </script>
+</body>
+</html>
